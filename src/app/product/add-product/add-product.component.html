@@ -1,0 +1,79 @@
+<div class="card">
+  <div class="card-header">
+    <h2>Add Product</h2>
+  </div>
+  <h4 *ngIf="message" [style.color]="success ? 'green':'red'">{{message}}</h4>
+  <div class="card-body">
+      
+      <form #productForm="ngForm" novalidate (ngSubmit)="onSubmit()">
+          <div class="form-group">
+              <label>Product Name</label>
+              <input type="text" required
+                      class="form-control" 
+                      name="name"
+                      #name = "ngModel"
+                      [class.is-invalid]="name.invalid && name.touched && !productForm.submitted"
+                      [(ngModel)]="product.productName"/>
+              <div *ngIf="name.invalid && name.touched && !productForm.submitted">
+                <small class="text-danger">product name is required</small>
+              </div>
+
+          </div>
+
+          <div ngModelGroup="category">
+          <div class="form-group">
+            <label>Product Category</label>
+            <select class="custom-select" required
+                    name="categoryName"
+                    #categoryName = "ngModel"
+                    [class.is-invalid]="categoryName.invalid && categoryName.touched"
+                    [(ngModel)]="product.category.name">
+                <option value="">select category</option>
+                <option *ngFor="let category of categories">
+                    {{category.name}}
+                </option>
+            </select>
+            <div *ngIf="categoryName.invalid && categoryName.touched">
+              <small class="text-danger">category is required</small>
+            </div>
+          </div>
+        </div>
+  
+          <div class="form-group">
+              <label>Brand</label>
+              <input type="text" required
+                      class="form-control" 
+                      name="brand" 
+                      #brand="ngModel"
+                      [class.is-invalid]="brand.invalid && brand.touched"
+                      [(ngModel)]="product.brand"/>
+
+                      <div *ngIf="brand.invalid && brand.touched">
+                        <small class="text-danger">product brand is required</small>
+                      </div>
+          </div>
+
+          <div class="form-group">
+              <label>Price</label>
+              <input type="number" required min="10"
+                      class="form-control" 
+                      name="price" 
+                      #price="ngModel"
+                      [class.is-invalid]="price.invalid && price.touched"
+                      [(ngModel)]="product.price"/>
+
+                      <div *ngIf="price.invalid && price.touched">
+                        <small *ngIf="price.errors.required" class="text-danger">product price is required</small>
+                        <small *ngIf="price.errors.min" class="text-danger">invalid product price</small>
+                      </div>
+          </div>
+          
+        <button class="btn btn-primary" 
+                type="submit"
+                [disabled]="productForm.form.invalid">Submit form</button>
+  
+  
+      </form>
+  
+  </div>
+</div>

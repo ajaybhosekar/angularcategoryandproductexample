@@ -1,0 +1,90 @@
+<div class="card">
+    <div class="card-header">
+      <h3>Update product</h3>
+    </div>
+    <h4 *ngIf="message" [style.color]="success ? 'green':'red'">{{message}}</h4>
+    <div class="card-body">
+      <h5 class="card-title">This is update product page</h5>
+      <h3>Product Details</h3>
+      <ul *ngIf="product">
+        <li>Product Id: {{product.productId}}</li>
+        <li>Product Name: {{product.productName}}</li>
+        <li>Product Category: {{product.category.name}}</li>
+        <li>Product brand: {{product.brand}}</li>
+        <li>Product Price: {{product.price}}</li>
+      </ul>
+      <form #productForm="ngForm" novalidate (ngSubmit)="onUpdate()">
+        <div class="form-group">
+          <label>Product Id: {{product.productId}}</label>
+        </div>
+        <div class="form-group">
+            <label>Product Name</label>
+            <input type="text" required
+                    class="form-control" 
+                    name="name"
+                    #name = "ngModel"
+                    [class.is-invalid]="name.invalid && name.touched"
+                    [(ngModel)]="product.productName"/>
+            <div *ngIf="name.invalid && name.touched">
+              <small class="text-danger">product name is required</small>
+            </div>
+
+        </div>
+
+        <!--<div ngModelGroup="category">-->
+        <div class="form-group">
+          <label>Product Category</label>
+          <select class="custom-select" required
+                  name="categoryName"
+                  #categoryName = "ngModel"
+                  [class.is-invalid]="categoryName.invalid && categoryName.touched"
+                  [(ngModel)]="product.category.name">
+              <option value="">select category</option>
+              <option *ngFor="let category of categories">
+                  {{category.name}}
+              </option>
+          </select>
+         
+          <div *ngIf="categoryName.invalid && categoryName.touched">
+            <small class="text-danger">category is required</small>
+          </div>
+        </div>
+      <!--</div>-->
+
+        <div class="form-group">
+            <label>Brand</label>
+            <input type="text" required
+                    class="form-control" 
+                    name="brand" 
+                    #brand="ngModel"
+                    [class.is-invalid]="brand.invalid && brand.touched"
+                    [(ngModel)]="product.brand"/>
+
+                    <div *ngIf="brand.invalid && brand.touched">
+                      <small class="text-danger">product brand is required</small>
+                    </div>
+        </div>
+
+        <div class="form-group">
+            <label>Price</label>
+            <input type="number" required min="10"
+                    class="form-control" 
+                    name="price" 
+                    #price="ngModel"
+                    [class.is-invalid]="price.invalid && price.touched"
+                    [(ngModel)]="product.price"/>
+
+                    <div *ngIf="price.invalid && price.touched">
+                      <small *ngIf="price.errors.required" class="text-danger">product price is required</small>
+                      <small *ngIf="price.errors.min" class="text-danger">invalid product price</small>
+                    </div>
+        </div>
+        
+      <button class="btn btn-primary" 
+              type="submit"
+              [disabled]="productForm.form.invalid">Submit form</button>
+
+
+    </form>
+    </div>
+  </div>
